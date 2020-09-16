@@ -3,10 +3,8 @@ package com.FirstWebApp.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.FirstWebApp.model.Person;
 import com.FirstWebApp.repositories.PersonRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,73 +39,72 @@ public class PersonController {
     }
 
 //Retrieve Operations
-@GetMapping("/collections")
-public ResponseEntity<List<Person>> getAllPersons(@RequestParam(required = false) String firstname) {
-    try {
-        List<Person> per = new ArrayList<Person>();
-
-        if (firstname == null)
-            perRepository.findAll().forEach(per::add);
-        else
-            perRepository.findByFirstnameContaining(firstname).forEach(per::add);
-
-        if (per.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//returns List of Person, if there is firstname parameter, it returns a List in that each Person contains the firstname
+    @GetMapping("/collections")
+    public ResponseEntity<List<Person>> getAllPersons(@RequestParam(required = false) String firstname) {
+        try {
+            List<Person> per = new ArrayList<Person>();
+            if (firstname == null)
+                perRepository.findAll().forEach(per::add);
+            else
+                perRepository.findByFirstnameContaining(firstname).forEach(per::add);
+            if (per.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(per, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-         return new ResponseEntity<>(per, HttpStatus.OK);
-     } catch (Exception e) {
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
 
-@GetMapping("/collections/{id}")
-public ResponseEntity<Person> getPersonById(@PathVariable("id") String id) {
-  Optional<Person> perData = perRepository.findById(id);
-  if (perData.isPresent()) {
-    return new ResponseEntity<>(perData.get(), HttpStatus.OK);
-  } else {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
-}
+    //returns Persons by given id
+    @GetMapping("/collections/{id}")
+    public ResponseEntity<Person> getPersonById(@PathVariable("id") String id) {
+        Optional<Person> perData = perRepository.findById(id);
+        if (perData.isPresent()) {
+            return new ResponseEntity<>(perData.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
 //update operation 
-@PutMapping("/collections/{id}")
-public ResponseEntity<Person> updatePerson(@PathVariable("id") String id, @RequestBody Person per) {
-  Optional<Person> perData = perRepository.findById(id);
+    @PutMapping("/collections/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") String id, @RequestBody Person per) {
+        Optional<Person> perData = perRepository.findById(id);
+        if (perData.isPresent()) {
+            Person _pp = perData.get();
+            _pp.setFirstname(per.getFirstname());
+            _pp.setLastname(per.getLastname());
+            _pp.setGender(per.getGender());
+            _pp.setDob(per.getDob());
+            return new ResponseEntity<>(perRepository.save(_pp), HttpStatus.OK);
+        } else {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-  if (perData.isPresent()) {
-    Person _pp = perData.get();
-    _pp.setFirstname(per.getFirstname());
-    _pp.setLastname(per.getLastname());
-    _pp.setGender(per.getGender());
-    _pp.setDob(per.getDob());
-    return new ResponseEntity<>(perRepository.save(_pp), HttpStatus.OK);
-  } else {
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
-}
-
-//delete operation
-@DeleteMapping("/collections/{id}")
-public ResponseEntity<HttpStatus> deletePerson(@PathVariable("id") String id) {
-  try {
-    perRepository.deleteById(id);
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  } catch (Exception e) {
-    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-}
-
-@DeleteMapping("/collections")
-public ResponseEntity<HttpStatus> deleteAllPersons() {
-  try {
-    perRepository.deleteAll();
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  } catch (Exception e) {
-    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-}
+    //delete operation
+    //delete a Person document with given id
+    @DeleteMapping("/collections/{id}")
+    public ResponseEntity<HttpStatus> deletePerson(@PathVariable("id") String id) {
+        try {
+            perRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //remove all documents in Persons collection
+    @DeleteMapping("/collections")
+    public ResponseEntity<HttpStatus> deleteAllPersons() {
+        try {
+            perRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
