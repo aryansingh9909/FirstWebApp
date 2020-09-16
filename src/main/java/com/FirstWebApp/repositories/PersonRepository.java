@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.FirstWebApp.model.Person;
 
 public interface PersonRepository extends MongoRepository<Person, String> {
-  List<Person> findByfirstnameContaining(String title);
+  List<Person> findByFirstnameContaining(String title);
   
 }
