@@ -1,4 +1,4 @@
-package com.FirstWebApp.service.PersonService;
+package com.FirstWebApp.service;
 
 import java.util.List;
 import com.app.springbootrestwithmongo.entity.Person;
