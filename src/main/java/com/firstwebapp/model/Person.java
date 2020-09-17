@@ -1,4 +1,4 @@
-package com.FirstWebApp.model;
+package com.firstwebapp.model;
 
 import java.util.Date;
 import org.springframework.data.annotation.Id;
@@ -13,10 +13,10 @@ public class Person {
   private String lastname;
   private String gender;
   private Date dob;
-
-  public Person() {
-
-  }
+  
+  public Person(){
+    }
+    
  public Person(String firstname, String lastname, String gender, Date dob) {
       this.firstname = firstname;
       this.lastname = lastname;

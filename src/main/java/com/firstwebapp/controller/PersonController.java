@@ -1,10 +1,12 @@
-package com.FirstWebApp.controller;
+package com.firstwebapp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.FirstWebApp.model.Person;
-import com.FirstWebApp.repositories.PersonRepository;
+
+import com.firstwebapp.model.Person;
+import com.firstwebapp.repositories.PersonRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

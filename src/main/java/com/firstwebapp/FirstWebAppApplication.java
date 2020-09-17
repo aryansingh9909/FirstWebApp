@@ -1,4 +1,4 @@
-package com.FirstWebApp;
+package com.firstwebapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FirstWebAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FirstWebAppApplication.class, args);
+        SpringApplication.run(FirstWebAppApplication.class, args);
+         System.out.println("Hi");
 	}
 
 }
