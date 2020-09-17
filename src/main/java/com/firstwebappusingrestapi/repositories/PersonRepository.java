@@ -1,6 +1,6 @@
-package com.firstwebapp.repositories;
+package com.firstwebappusingrestapi.repositories;
 
-import com.firstwebapp.model.Person;
+import com.firstwebappusingrestapi.model.Person;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonRepository extends MongoRepository<Person, String> {
   Person findByFirstnameContaining(String firstname);
- 
   
 }
