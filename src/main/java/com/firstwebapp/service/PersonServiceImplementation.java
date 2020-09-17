@@ -1,5 +1,6 @@
 package com.firstwebapp.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.firstwebapp.model.Person;
@@ -13,19 +14,39 @@ import org.springframework.stereotype.Service;
 public class PersonServiceImplementation implements PersonService{
     @Autowired PersonRepository perRepository;
 
-    public Person save(Person per) {
-        return perRepository.save(per);
+    //create operation
+     @Override
+    public Person create(String firstname, String lastname, String gender, Date dob) {
+        return perRepository.save(new Person(firstname,lastname,gender,dob));
     }
-    public Person update(Person per){
-        return perRepository.save(per);
-    }
+
+    //retrieve operation
+     @Override
     public List<Person> getAllPerson() {
         return perRepository.findAll();
     }
-    public void deletePerson( String id) {
-        perRepository.deleteById(id);
+     @Override
+    public Person findByFirstnameContaining(String firstname){
+        return perRepository.findByFirstnameContaining(firstname);
     }
-   /* public Person getPerson(String id){
-        return  perRepository.findById(id);
-    }*/
+    //update operation
+     @Override
+    public Person update(String firstname, String lastname, String gender, Date dob){
+        Person p = perRepository.findByFirstnameContaining(firstname);
+        p.setLastname(lastname);
+        p.setGender(gender);
+        p.setDob(dob);
+        return perRepository.save(p);
+    }
+    @Override
+   //delete operation
+    public void deleteAll(){
+       perRepository.deleteAll();
+    }
+     @Override
+    public void delete( String firstname) {
+         Person p = perRepository.findByFirstnameContaining(firstname);
+        perRepository.delete(p);
+    }
+  
 }
